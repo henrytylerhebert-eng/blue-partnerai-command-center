@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Blue PartnerAI active deployment command center.">
+  <title>Blue PartnerAI Command Center</title>
+  <link rel="icon" href="assets/blue-partner-mark.svg" type="image/svg+xml">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172033;
+      --muted: #60708a;
+      --line: #d8e0eb;
+      --panel: #ffffff;
+      --paper: #f6f8fb;
+      --blue: #1f5eff;
+      --teal: #168b78;
+      --gold: #9f6c00;
+      --red: #b42318;
+      --green: #177245;
+      --purple: #6a4bc2;
+      --shadow: 0 18px 44px rgba(23, 32, 51, 0.08);
+      --radius: 8px;
+      --focus: 0 0 0 3px rgba(31, 94, 255, 0.22);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      box-shadow: var(--focus);
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    aside {
+      background: #ffffff;
+      border-right: 1px solid var(--line);
+      padding: 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    main {
+      min-width: 0;
+      padding: 22px;
+    }
+
+    .brand {
+      display: grid;
+      grid-template-columns: 50px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .brand img {
+      width: 50px;
+      height: 50px;
+      display: block;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-tile {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 14px;
+      background: #fbfcff;
+    }
+
+    .status-tile strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .status-tile span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: grid;
+      gap: 6px;
+      margin: 16px 0;
+    }
+
+    .nav-btn {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      padding: 9px 10px;
+      border-radius: 7px;
+      min-height: 40px;
+    }
+
+    .nav-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+    }
+
+    .nav-btn.active,
+    .nav-btn:hover {
+      background: #edf4ff;
+      border-color: #c7d9ff;
+      color: #153fbd;
+    }
+
+    .side-actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .icon-btn,
+    .primary-btn,
+    .ghost-btn,
+    .danger-btn {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 9px 11px;
+      background: #ffffff;
+      color: var(--ink);
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: normal;
+    }
+
+    .icon-btn svg,
+    .primary-btn svg,
+    .ghost-btn svg,
+    .danger-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      flex: 0 0 auto;
+    }
+
+    .primary-btn {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #ffffff;
+    }
+
+    .danger-btn {
+      color: var(--red);
+      border-color: #ffd1cc;
+      background: #fff7f5;
+    }
+
+    .ghost-btn:hover,
+    .icon-btn:hover {
+      background: #f2f6fb;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .title h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 860px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .alert {
+      display: grid;
+      grid-template-columns: 6px minmax(0, 1fr);
+      gap: 12px;
+      background: #fff7f5;
+      border: 1px solid #ffd1cc;
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 18px;
+    }
+
+    .alert:before {
+      content: "";
+      display: block;
+      background: var(--red);
+      border-radius: 99px;
+    }
+
+    .alert strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .metric,
+    .panel,
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .metric {
+      padding: 14px;
+      min-height: 102px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .metric .sub {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .panel {
+      padding: 16px;
+    }
+
+    .panel-head {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .panel h3 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .panel .note {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 4px 0 0;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 0.42fr);
+      gap: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      border-bottom: 1px solid #e9eef5;
+      padding: 10px 8px;
+      vertical-align: top;
+    }
+
+    th {
+      color: #40516d;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      background: #f7f9fc;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 26px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge:before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .green {
+      color: var(--green);
+      background: #ecfdf3;
+      border-color: #bae7ce;
+    }
+
+    .yellow {
+      color: var(--gold);
+      background: #fff8e6;
+      border-color: #f7dea0;
+    }
+
+    .red {
+      color: var(--red);
+      background: #fff1ef;
+      border-color: #ffc9c2;
+    }
+
+    .unknown {
+      color: var(--purple);
+      background: #f2edff;
+      border-color: #d8cdfc;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: minmax(200px, 1fr) 180px 180px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px;
+      background: #ffffff;
+      color: var(--ink);
+      min-height: 40px;
+    }
+
+    textarea {
+      min-height: 126px;
+      resize: vertical;
+    }
+
+    .task-list,
+    .blocker-list,
+    .claim-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .card {
+      padding: 12px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-weight: 750;
+      margin: 0;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 6px 0;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .decision-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 170px;
+      gap: 10px;
+      align-items: start;
+      margin-top: 10px;
+    }
+
+    .decision-row select {
+      min-height: 38px;
+    }
+
+    .copy-box {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      white-space: pre-wrap;
+      color: #26344d;
+      max-height: 360px;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: #172033;
+      color: #ffffff;
+      padding: 11px 14px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+      z-index: 10;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(23, 32, 51, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 20;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(720px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      background: #ffffff;
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 22px 80px rgba(0, 0, 0, 0.28);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .modal h3 {
+      margin: 0;
+    }
+
+    .progress {
+      height: 9px;
+      background: #e8eef7;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .topbar,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        justify-content: flex-start;
+      }
+
+      .grid.metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .filter-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        padding: 14px;
+      }
+
+      aside {
+        padding: 14px;
+      }
+
+      nav {
+        grid-template-columns: 1fr;
+      }
+
+      .grid.metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .title h2 {
+        font-size: 23px;
+      }
+
+      .decision-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      aside,
+      .toolbar,
+      .side-actions,
+      .filter-row,
+      .decision-row select,
+      .modal-backdrop,
+      .toast {
+        display: none !important;
+      }
+
+      .app {
+        display: block;
+      }
+
+      main {
+        padding: 0;
+      }
+
+      .panel,
+      .metric,
+      .card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <img src="assets/blue-partner-mark.svg" alt="Blue PartnerAI command center mark">
+        <div>
+          <h1>Blue PartnerAI</h1>
+          <p>Deployment command center</p>
+        </div>
+      </div>
+
+      <div class="status-tile">
+        <strong>Launch state</strong>
+        <span>No-go for production. Prepare for deployment.</span>
+      </div>
+
+      <nav aria-label="Command center sections">
+        <button class="nav-btn active" data-view="overview" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 13h6V4H4v9Zm10 7h6V4h-6v16ZM4 20h6v-4H4v4Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Overview
+        </button>
+        <button class="nav-btn" data-view="workstreams" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke-width="2" stroke-linecap="round"/></svg>
+          Workstreams
+        </button>
+        <button class="nav-btn" data-view="approvals" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Approvals
+        </button>
+        <button class="nav-btn" data-view="claims" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l3 3v15H6V3Z M9 8h6M9 12h6M9 16h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Claims
+        </button>
+        <button class="nav-btn" data-view="technical" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 8h8v8H8V8Z M3 10h3M3 14h3M18 10h3M18 14h3M10 3v3M14 3v3M10 18v3M14 18v3" stroke-width="2" stroke-linecap="round"/></svg>
+          Technical
+        </button>
+        <button class="nav-btn" data-view="copy" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 8h11v13H8V8Z M5 16H4a1 1 0 0 1-1-1V4h11a1 1 0 0 1 1 1v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Copy Center
+        </button>
+        <button class="nav-btn" data-view="state" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 8l5-5 5 5M5 21h14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          State
+        </button>
+      </nav>
+
+      <div class="side-actions">
+        <button class="primary-btn" id="copyUrlBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Copy link
+        </button>
+        <button class="ghost-btn" id="printBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v7H7v-7Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Print
+        </button>
+        <button class="danger-btn" id="resetBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4v6h6M20 20v-6h-6M6 10a7 7 0 0 1 11.8-3M18 14A7 7 0 0 1 6.2 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reset local edits
+        </button>
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div class="title">
+          <h2 id="viewTitle">Active Command Center</h2>
+          <p id="viewSubtitle">Live operating board for controlled Blue PartnerAI deployment preparation.</p>
+        </div>
+        <div class="toolbar">
+          <button class="ghost-btn" id="copyFounderBtn" type="button">Copy founder ask</button>
+          <button class="ghost-btn" id="copyTechBtn" type="button">Copy technical ask</button>
+          <button class="primary-btn" id="openExportBtn" type="button">Export state</button>
+        </div>
+      </div>
+
+      <div class="alert" role="status">
+        <div>
+          <strong>Production launch is blocked.</strong>
+          Founder approvals, technical source access, security evidence, and analytics implementation are unresolved.
+        </div>
+      </div>
+
+      <section id="overview" class="view">
+        <div class="grid metrics">
+          <div class="metric">
+            <div class="label">Launch status</div>
+            <div class="value">No-go</div>
+            <div class="sub">Prepare, do not deploy</div>
+          </div>
+          <div class="metric">
+            <div class="label">Open blockers</div>
+            <div class="value" id="blockerCount">5</div>
+            <div class="sub">Critical path unresolved</div>
+          </div>
+          <div class="metric">
+            <div class="label">Draft assets</div>
+            <div class="value">8</div>
+            <div class="sub">Ready for review</div>
+          </div>
+          <div class="metric">
+            <div class="label">Measurements</div>
+            <div class="value">0</div>
+            <div class="sub">No measurements found</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Immediate Operator Queue</h3>
+                <p class="note">Client-side checkboxes save in this browser only.</p>
+              </div>
+            </div>
+            <div id="taskList" class="task-list"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Blocker Board</h3>
+                <p class="note">Resolve these before launch readiness.</p>
+              </div>
+            </div>
+            <div id="blockerList" class="blocker-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workstreams" class="view hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Workstreams</h3>
+              <p class="note">Filter by status or owner, then update local notes as decisions come in.</p>
+            </div>
+          </div>
+          <div class="filter-row">
+            <div class="field">
+              <label for="workstreamSearch">Search</label>
+              <input id="workstreamSearch" type="search" placeholder="Search workstream, owner, next action">
+            </div>
+            <div class="field">
+              <label for="statusFilter">Status</label>
+              <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="Green">Green</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Red">Red</option>
+                <option value="Unknown">Unknown</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ownerFilter">Owner</label>
+              <select id="ownerFilter"></select>
+            </div>
+          </div>
+          <div id="workstreamList" class="task-list"></div>
+        </div>
+      </section>
+
+      <section id="approvals" class="view hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Founder Approval Packet</h3>
+              <p class="note">Set local decisions as founder responses arrive. Export state to share updates.</p>
+            </div>
+          </div>
+          <div id="approvalList" class="claim-list"></div>
+        </div>
+      </section>
+
+      <section id="claims" class="view hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Public Claims Register</h3>
+              <p class="note">Claims must be approved here before use in public assets.</p>
+            </div>
+          </div>
+          <div class="filter-row">
+            <div class="field">
+              <label for="claimSearch">Search claims</label>
+              <input id="claimSearch" type="search" placeholder="Search claim or source">
+            </div>
+            <div class="field">
+              <label for="claimFilter">Claim status</label>
+              <select id="claimFilter">
+                <option value="all">All</option>
+                <option value="Approved source">Approved source</option>
+                <option value="Pending founder approval">Pending founder approval</option>
+                <option value="Stale / do not use">Stale / do not use</option>
+                <option value="Do not use until confirmed">Do not use until confirmed</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="claimTypeFilter">Type</label>
+              <select id="claimTypeFilter">
+                <option value="all">All</option>
+                <option value="Baseline">Baseline</option>
+                <option value="Proof">Proof</option>
+                <option value="Security">Security</option>
+                <option value="Blocked">Blocked</option>
+              </select>
+            </div>
+          </div>
+          <div id="claimList" class="claim-list"></div>
+        </div>
+      </section>
+
+      <section id="technical" class="view hidden">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Technical Discovery</h3>
+                <p class="note">Names and locations only. No secrets or credential values.</p>
+              </div>
+            </div>
+            <div id="techList" class="task-list"></div>
+          </div>
+          <div class="panel">
+            <h3>Definition Of Done</h3>
+            <p>A deployer can name the repo, framework, hosting provider, deploy path, env var names, rollback method, and incident owner without guessing.</p>
+            <div class="progress" aria-label="Technical discovery completion">
+              <span id="techProgress"></span>
+            </div>
+            <p class="note" id="techProgressText">0 percent complete</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="copy" class="view hidden">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Founder Ask</h3>
+                <p class="note">Copy into email or a message.</p>
+              </div>
+              <button class="ghost-btn" data-copy="founderAsk" type="button">Copy</button>
+            </div>
+            <div class="copy-box" id="founderAsk"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Technical Ask</h3>
+                <p class="note">Send to Ryan or the current app/site owner.</p>
+              </div>
+              <button class="ghost-btn" data-copy="technicalAsk" type="button">Copy</button>
+            </div>
+            <div class="copy-box" id="technicalAsk"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="state" class="view hidden">
+        <div class="content-grid">
+          <div class="panel">
+            <h3>Export Or Import Browser State</h3>
+            <p class="note">Edits live in localStorage. Export JSON to send a snapshot; import JSON to restore one.</p>
+            <div class="side-actions">
+              <button class="primary-btn" id="downloadStateBtn" type="button">Download state JSON</button>
+              <button class="ghost-btn" id="copyStateBtn" type="button">Copy state JSON</button>
+              <label class="ghost-btn" for="importStateFile">Import state JSON</label>
+              <input id="importStateFile" type="file" accept="application/json" class="hidden">
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Local Notes</h3>
+            <p class="note">Use this for the next status update. Saved in this browser.</p>
+            <textarea id="localNotes" placeholder="Add status notes, meeting outcomes, or follow-up reminders."></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">Export state</h3>
+          <p class="note">Copy this JSON or download it from the State tab.</p>
+        </div>
+        <button class="ghost-btn" id="closeModalBtn" type="button">Close</button>
+      </div>
+      <textarea id="exportText" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <script>
+    const STORAGE_KEY = "bluePartnerCommandCenterState.v1";
+
+    const defaultData = {
+      activated: "2026-07-16",
+      mode: "Controlled deployment preparation",
+      launchStatus: "No-go",
+      recommendation: "Prepare for deployment; do not deploy until technical source access, security evidence, analytics implementation, and founder approvals are resolved.",
+      workstreams: [
+        { id: "founder-approvals", name: "Founder approvals", status: "Yellow", state: "Packet drafted", next: "Send packet and collect written decisions", owner: "Tyler", due: "Immediate" },
+        { id: "technical-discovery", name: "Technical discovery", status: "Red", state: "Checklist drafted", next: "Send to Ryan / technical owner", owner: "Tyler", due: "Immediate" },
+        { id: "product-readiness", name: "Product readiness", status: "Yellow", state: "Draft plan exists", next: "Resolve pilot-ready scope and feature availability", owner: "Founders + Tyler", due: "After founder review" },
+        { id: "public-claims", name: "Public claims", status: "Yellow", state: "Register drafted", next: "Move claims to approved / blocked / unknown after founder review", owner: "Tyler", due: "After founder review" },
+        { id: "sales-readiness", name: "Sales readiness", status: "Yellow", state: "Draft package exists", next: "Hold until claims and sender identity are approved", owner: "Tyler / sales owner", due: "After founder review" },
+        { id: "marketing-launch", name: "Marketing launch", status: "Yellow", state: "Draft plan exists", next: "Hold until CTA, audience, timing, and claims are approved", owner: "Tyler / marketing owner", due: "After founder review" },
+        { id: "creative-launch", name: "Creative launch", status: "Yellow", state: "Briefs drafted", next: "Convert to production assets only after copy approval", owner: "Creative owner", due: "After founder review" },
+        { id: "analytics", name: "Analytics", status: "Red", state: "Plan exists", next: "Select stack and verify tracking once site access exists", owner: "Analytics owner", due: "After technical access" },
+        { id: "website-app", name: "Website/app readiness", status: "Red", state: "Blocked", next: "Locate repo, hosting, DNS owner, deployment path", owner: "Technical owner", due: "Critical path" },
+        { id: "presentation", name: "Presentation", status: "Yellow", state: "Not yet drafted", next: "Build after product scope and public claims are approved", owner: "Presentation owner", due: "After approvals" }
+      ],
+      tasks: [
+        { id: "send-founder", title: "Send founder approval packet to Ryan and Sarah", status: "Yellow", owner: "Tyler", file: "approvals/FOUNDER-APPROVAL-PACKET.md" },
+        { id: "send-tech", title: "Send technical discovery checklist to Ryan or technical owner", status: "Red", owner: "Tyler", file: "technical/TECHNICAL-DISCOVERY.md" },
+        { id: "schedule-session", title: "Ask for a 30-minute approval session", status: "Yellow", owner: "Tyler", file: "ACTIVE-COMMAND-CENTER.md" },
+        { id: "update-claims", title: "Update public claims register after founder responses", status: "Yellow", owner: "Tyler", file: "claims/PUBLIC-CLAIMS-REGISTER.md" },
+        { id: "update-gonogo", title: "Update go/no-go decision with dated status row", status: "Yellow", owner: "Tyler", file: "GO-NO-GO-DECISION.md" },
+        { id: "run-tech", title: "Run technical readiness handoff after source access arrives", status: "Red", owner: "Technical owner", file: "technical/TECHNICAL-READINESS-REPORT.md" }
+      ],
+      blockers: [
+        { id: "founder-claims", name: "Founder claims approval missing", impact: "Public copy, sales, marketing, and creative cannot ship", owner: "Ryan + Sarah", resolution: "Complete founder approval packet" },
+        { id: "technical-source", name: "Technical source access missing", impact: "Website/app launch cannot be verified or deployed", owner: "Ryan / technical owner", resolution: "Complete technical discovery checklist" },
+        { id: "security-evidence", name: "Security evidence missing", impact: "CJIS/security claims cannot be expanded safely", owner: "Ryan / technical owner", resolution: "Provide evidence package or approved limited wording" },
+        { id: "analytics-implementation", name: "Analytics implementation missing", impact: "Launch cannot be measured", owner: "Technical / analytics owner", resolution: "Select stack and verify test events after source access" },
+        { id: "agency-permission", name: "Agency reference permission unknown", impact: "Named pilot/customer references may be unsafe", owner: "Founders", resolution: "Approve exact agency naming rules" }
+      ],
+      approvals: [
+        { id: "product-scope", item: "Product scope", prompt: "Confirm whether the deployable offer is Chat + Maps + Reporting or a narrower pilot wedge.", decision: "Pending" },
+        { id: "feature-availability", item: "Feature availability", prompt: "Mark Chat, Maps, Reporting, body-cam, and translation as available, pilot-only, roadmap, or do not use.", decision: "Pending" },
+        { id: "reporting-language", item: "Reporting language", prompt: "Confirm assistive in-RMS writing support with officer authorship. No generative-report claims.", decision: "Pending" },
+        { id: "body-cam", item: "Body-cam status", prompt: "Approve, block, or roadmap-only any public body-cam mention.", decision: "Pending" },
+        { id: "translation", item: "Translation status", prompt: "Approve, block, or roadmap-only any public translation mention.", decision: "Pending" },
+        { id: "award-naming", item: "Award naming", prompt: "Confirm Innovate South vs. Tech Tank and whether the amount is public-safe.", decision: "Pending" },
+        { id: "proof-points", item: "Public proof points", prompt: "Approve 100+ ride-alongs, Citizens Academy, St. Martinville, UL Lafayette/IRI, OM membership.", decision: "Pending" },
+        { id: "security-claims", item: "Security/compliance wording", prompt: "Confirm CJIS-aligned vs. CJIS-compliant and evidence available.", decision: "Pending" },
+        { id: "cta", item: "Primary CTA", prompt: "Choose Schedule a pilot demo, Request early access, Let's talk, or another CTA.", decision: "Pending" },
+        { id: "audience", item: "Outbound audience", prompt: "Approve initial target list and sender identity.", decision: "Pending" }
+      ],
+      claims: [
+        { id: "connected-assistant", type: "Baseline", claim: "Blue Partner is a connected assistant built for patrol.", source: "Company profile", status: "Approved source", note: "Safe after founder final review" },
+        { id: "right-info", type: "Baseline", claim: "Blue Partner delivers the right information at the right moment, hands-free.", source: "Company profile", status: "Approved source", note: "Safe after founder final review" },
+        { id: "product-line", type: "Baseline", claim: "The product line includes Blue Partner Chat, Blue Partner Maps, and Blue Partner Reporting.", source: "Company profile / README", status: "Approved source", note: "Feature availability still needs founder confirmation" },
+        { id: "hardware-agnostic", type: "Baseline", claim: "Blue Partner is hardware agnostic.", source: "Company profile", status: "Approved source", note: "Avoid implying all integrations are live" },
+        { id: "agency-data", type: "Baseline", claim: "Blue Partner keeps agency-owned data under agency control.", source: "Company profile", status: "Approved source", note: "Needs technical/security support for security reviews" },
+        { id: "read-only", type: "Security", claim: "Blue Partner uses read-only system connections.", source: "Company profile", status: "Pending founder approval", note: "Needs technical owner confirmation" },
+        { id: "supportive", type: "Baseline", claim: "Blue Partner is supportive, not directive.", source: "Company profile", status: "Approved source", note: "Core messaging rule" },
+        { id: "authorship", type: "Baseline", claim: "Officers keep judgment and authorship.", source: "Company profile", status: "Approved source", note: "Required for Reporting language" },
+        { id: "ride-alongs", type: "Proof", claim: "Lafayette PD field immersion included 100+ ride-along hours.", source: "Company profile", status: "Pending founder approval", note: "Confirm permission and wording" },
+        { id: "st-martinville", type: "Proof", claim: "St. Martinville PD is a pilot site.", source: "Company profile", status: "Pending founder approval", note: "Confirm permission to name" },
+        { id: "award", type: "Proof", claim: "Blue Partner won 2nd Place and Crowd Favorite at Innovate South.", source: "Company profile", status: "Pending founder approval", note: "Confirm official name and amount" },
+        { id: "cjis-aligned", type: "Security", claim: "Blue Partner is CJIS-aligned.", source: "Company profile", status: "Pending founder approval", note: "Confirm phrase and evidence package" },
+        { id: "ai-generated", type: "Blocked", claim: "AI-generated police reports.", source: "Older docs", status: "Stale / do not use", note: "Conflicts with current profile framing" },
+        { id: "bodycam-live", type: "Blocked", claim: "Confirmed body-cam integration.", source: "Older docs", status: "Do not use until confirmed", note: "Not current profile/site framing" },
+        { id: "translation-live", type: "Blocked", claim: "Confirmed translation feature.", source: "Older docs", status: "Do not use until confirmed", note: "Not current profile/site framing" },
+        { id: "verified-metrics", type: "Blocked", claim: "Verified customer metrics or hours saved.", source: "No source found", status: "Stale / do not use", note: "No measurements found" }
+      ],
+      technical: [
+        "Repo location",
+        "Repo host and access method",
+        "Production website URL",
+        "App URL(s)",
+        "API URL(s)",
+        "Hosting provider",
+        "Domain/DNS owner and registrar",
+        "Website framework",
+        "App framework",
+        "Package manager",
+        "Build command",
+        "Test command",
+        "Deploy command or CI/CD workflow",
+        "Environment variable names",
+        "Secrets manager / handling",
+        "Auth provider",
+        "Database / storage",
+        "Third-party integrations",
+        "Logging and monitoring",
+        "Error reporting",
+        "Analytics tool",
+        "Rollback method",
+        "Incident owner and contact path"
+      ],
+      copy: {
+        founderAsk: `Subject: Blue PartnerAI launch approval packet\n\nRyan and Sarah,\n\nI pulled the Blue Partner deployment package into an active command center. The company and messaging layer is strong, but public launch is still blocked until product scope, public claims, security wording, and technical deployment access are confirmed.\n\nCan you review deployment/blue-partnerai/approvals/FOUNDER-APPROVAL-PACKET.md and mark each item as Approved, Approved with edits, Do not use, or Unknown / needs verification?\n\nThe key decisions are:\n\n- Whether the deployable offer is Chat + Maps + Reporting or a narrower pilot wedge.\n- Which features are available, pilot-only, or roadmap.\n- The final Reporting language.\n- Whether body-cam or translation can be mentioned publicly.\n- Official award naming.\n- Which proof points and agency references are public-safe.\n- Exact security/compliance phrasing.\n- Primary CTA, launch timing, and outbound audience.\n\nNo external copy will ship until the claims register is updated from your decisions.`,
+        technicalAsk: `Subject: Blue PartnerAI technical discovery checklist\n\nRyan,\n\nThe command center needs the technical deployment surface before we can move from preparation into launch readiness. Can you fill in deployment/blue-partnerai/technical/TECHNICAL-DISCOVERY.md or point me to the right repo/hosting owner?\n\nNo credentials or secret values should go in the file. I only need names, owners, locations, and links for:\n\n- Repo and hosting provider.\n- Domain/DNS owner.\n- Website/app framework.\n- Build, test, and deploy commands.\n- Environment variable names.\n- Integrations that are live, pilot-only, or roadmap.\n- Logging, monitoring, analytics, rollback, and incident owner.\n\nUntil this is filled in, technical readiness stays Red and production deployment remains no-go.`
+      },
+      localNotes: ""
+    };
+
+    const state = loadState();
+
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return structuredClone(defaultData);
+      try {
+        const parsed = JSON.parse(saved);
+        return mergeDefaults(structuredClone(defaultData), parsed);
+      } catch (error) {
+        console.warn("State parse failed", error);
+        return structuredClone(defaultData);
+      }
+    }
+
+    function mergeDefaults(base, saved) {
+      const result = { ...base, ...saved };
+      result.workstreams = mergeById(base.workstreams, saved.workstreams);
+      result.tasks = mergeById(base.tasks, saved.tasks);
+      result.blockers = mergeById(base.blockers, saved.blockers);
+      result.approvals = mergeById(base.approvals, saved.approvals);
+      result.claims = mergeById(base.claims, saved.claims);
+      result.techAnswers = saved.techAnswers || {};
+      result.taskDone = saved.taskDone || {};
+      result.copy = { ...base.copy, ...(saved.copy || {}) };
+      return result;
+    }
+
+    function mergeById(baseRows, savedRows = []) {
+      const savedMap = new Map(savedRows.map((row) => [row.id, row]));
+      return baseRows.map((row) => ({ ...row, ...(savedMap.get(row.id) || {}) }));
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state, null, 2));
+      renderMetrics();
+    }
+
+    function statusClass(status) {
+      if (/green|approved source/i.test(status)) return "green";
+      if (/yellow|pending/i.test(status)) return "yellow";
+      if (/red|stale|do not use/i.test(status)) return "red";
+      return "unknown";
+    }
+
+    function badge(status) {
+      return `<span class="badge ${statusClass(status)}">${escapeHtml(status)}</span>`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
+    async function copyText(text, message = "Copied") {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(message);
+      } catch (error) {
+        showToast("Copy failed");
+      }
+    }
+
+    function renderMetrics() {
+      document.getElementById("blockerCount").textContent = String(state.blockers.length);
+      const doneCount = Object.values(state.taskDone || {}).filter(Boolean).length;
+      const total = state.tasks.length || 1;
+      document.title = `Blue PartnerAI Command Center (${doneCount}/${total})`;
+    }
+
+    function renderTasks() {
+      const list = document.getElementById("taskList");
+      list.innerHTML = state.tasks.map((task) => {
+        const checked = state.taskDone?.[task.id] ? "checked" : "";
+        return `<article class="card">
+          <div class="card-head">
+            <p class="card-title">${escapeHtml(task.title)}</p>
+            ${badge(task.status)}
+          </div>
+          <label><input type="checkbox" data-task="${task.id}" ${checked}> Mark done</label>
+          <div class="meta">
+            <span>Owner: ${escapeHtml(task.owner)}</span>
+            <span>File: ${escapeHtml(task.file)}</span>
+          </div>
+        </article>`;
+      }).join("");
+      list.querySelectorAll("[data-task]").forEach((checkbox) => {
+        checkbox.addEventListener("change", (event) => {
+          state.taskDone = state.taskDone || {};
+          state.taskDone[event.target.dataset.task] = event.target.checked;
+          saveState();
+        });
+      });
+    }
+
+    function renderBlockers() {
+      const list = document.getElementById("blockerList");
+      list.innerHTML = state.blockers.map((blocker) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(blocker.name)}</p>
+          ${badge("Red")}
+        </div>
+        <p>${escapeHtml(blocker.impact)}</p>
+        <div class="meta">
+          <span>Owner: ${escapeHtml(blocker.owner)}</span>
+          <span>Resolution: ${escapeHtml(blocker.resolution)}</span>
+        </div>
+      </article>`).join("");
+    }
+
+    function renderOwners() {
+      const owners = ["all", ...new Set(state.workstreams.map((item) => item.owner))];
+      document.getElementById("ownerFilter").innerHTML = owners.map((owner) => `<option value="${escapeHtml(owner)}">${escapeHtml(owner === "all" ? "All" : owner)}</option>`).join("");
+    }
+
+    function renderWorkstreams() {
+      const query = document.getElementById("workstreamSearch")?.value?.toLowerCase() || "";
+      const status = document.getElementById("statusFilter")?.value || "all";
+      const owner = document.getElementById("ownerFilter")?.value || "all";
+      const rows = state.workstreams.filter((item) => {
+        const text = `${item.name} ${item.state} ${item.next} ${item.owner}`.toLowerCase();
+        return text.includes(query) && (status === "all" || item.status === status) && (owner === "all" || item.owner === owner);
+      });
+      document.getElementById("workstreamList").innerHTML = rows.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.name)}</p>
+          ${badge(item.status)}
+        </div>
+        <p><strong>State:</strong> ${escapeHtml(item.state)}</p>
+        <p><strong>Next:</strong> ${escapeHtml(item.next)}</p>
+        <div class="meta">
+          <span>Owner: ${escapeHtml(item.owner)}</span>
+          <span>Due: ${escapeHtml(item.due)}</span>
+        </div>
+        <div class="decision-row">
+          <textarea data-workstream-note="${item.id}" placeholder="Local note">${escapeHtml(item.note || "")}</textarea>
+          <select data-workstream-status="${item.id}">
+            ${["Green", "Yellow", "Red", "Unknown"].map((value) => `<option value="${value}" ${value === item.status ? "selected" : ""}>${value}</option>`).join("")}
+          </select>
+        </div>
+      </article>`).join("");
+      document.querySelectorAll("[data-workstream-status]").forEach((select) => {
+        select.addEventListener("change", (event) => {
+          const row = state.workstreams.find((item) => item.id === event.target.dataset.workstreamStatus);
+          if (row) row.status = event.target.value;
+          saveState();
+          renderWorkstreams();
+        });
+      });
+      document.querySelectorAll("[data-workstream-note]").forEach((field) => {
+        field.addEventListener("input", (event) => {
+          const row = state.workstreams.find((item) => item.id === event.target.dataset.workstreamNote);
+          if (row) row.note = event.target.value;
+          saveState();
+        });
+      });
+    }
+
+    function renderApprovals() {
+      document.getElementById("approvalList").innerHTML = state.approvals.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.item)}</p>
+          ${badge(item.decision)}
+        </div>
+        <p>${escapeHtml(item.prompt)}</p>
+        <div class="decision-row">
+          <textarea data-approval-note="${item.id}" placeholder="Decision notes">${escapeHtml(item.note || "")}</textarea>
+          <select data-approval="${item.id}">
+            ${["Pending", "Approved", "Approved with edits", "Do not use", "Unknown / needs verification"].map((value) => `<option value="${value}" ${value === item.decision ? "selected" : ""}>${value}</option>`).join("")}
+          </select>
+        </div>
+      </article>`).join("");
+      document.querySelectorAll("[data-approval]").forEach((select) => {
+        select.addEventListener("change", (event) => {
+          const row = state.approvals.find((item) => item.id === event.target.dataset.approval);
+          if (row) row.decision = event.target.value;
+          saveState();
+          renderApprovals();
+        });
+      });
+      document.querySelectorAll("[data-approval-note]").forEach((field) => {
+        field.addEventListener("input", (event) => {
+          const row = state.approvals.find((item) => item.id === event.target.dataset.approvalNote);
+          if (row) row.note = event.target.value;
+          saveState();
+        });
+      });
+    }
+
+    function renderClaims() {
+      const query = document.getElementById("claimSearch")?.value?.toLowerCase() || "";
+      const filter = document.getElementById("claimFilter")?.value || "all";
+      const type = document.getElementById("claimTypeFilter")?.value || "all";
+      const rows = state.claims.filter((claim) => {
+        const text = `${claim.claim} ${claim.source} ${claim.note}`.toLowerCase();
+        return text.includes(query) && (filter === "all" || claim.status === filter) && (type === "all" || claim.type === type);
+      });
+      document.getElementById("claimList").innerHTML = rows.map((claim) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(claim.claim)}</p>
+          ${badge(claim.status)}
+        </div>
+        <p><strong>Source:</strong> ${escapeHtml(claim.source)}</p>
+        <p>${escapeHtml(claim.note)}</p>
+        <div class="meta"><span>Type: ${escapeHtml(claim.type)}</span></div>
+      </article>`).join("");
+    }
+
+    function renderTechnical() {
+      state.techAnswers = state.techAnswers || {};
+      const total = state.technical.length;
+      const completed = state.technical.filter((item) => state.techAnswers[item]?.trim()).length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+      document.getElementById("techProgress").style.width = `${percent}%`;
+      document.getElementById("techProgressText").textContent = `${percent} percent complete (${completed}/${total})`;
+      document.getElementById("techList").innerHTML = state.technical.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item)}</p>
+          ${badge(state.techAnswers[item]?.trim() ? "Yellow" : "Unknown")}
+        </div>
+        <textarea data-tech="${escapeHtml(item)}" placeholder="Unknown">${escapeHtml(state.techAnswers[item] || "")}</textarea>
+      </article>`).join("");
+      document.querySelectorAll("[data-tech]").forEach((field) => {
+        field.addEventListener("input", (event) => {
+          state.techAnswers[event.target.dataset.tech] = event.target.value;
+          saveState();
+          renderTechnical();
+        });
+      });
+    }
+
+    function renderCopy() {
+      document.getElementById("founderAsk").textContent = state.copy.founderAsk;
+      document.getElementById("technicalAsk").textContent = state.copy.technicalAsk;
+    }
+
+    function renderState() {
+      document.getElementById("localNotes").value = state.localNotes || "";
+    }
+
+    function exportState() {
+      return JSON.stringify({
+        exportedAt: new Date().toISOString(),
+        app: "Blue PartnerAI Command Center",
+        state
+      }, null, 2);
+    }
+
+    function downloadState() {
+      const blob = new Blob([exportState()], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `blue-partner-command-center-state-${new Date().toISOString().slice(0, 10)}.json`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function openExportModal() {
+      document.getElementById("exportText").value = exportState();
+      document.getElementById("modalBackdrop").classList.add("open");
+    }
+
+    function setView(viewId) {
+      document.querySelectorAll(".view").forEach((view) => view.classList.toggle("hidden", view.id !== viewId));
+      document.querySelectorAll(".nav-btn").forEach((button) => button.classList.toggle("active", button.dataset.view === viewId));
+      const titles = {
+        overview: ["Active Command Center", "Live operating board for controlled Blue PartnerAI deployment preparation."],
+        workstreams: ["Workstreams", "Track owners, statuses, notes, and next actions."],
+        approvals: ["Approvals", "Capture founder decisions before anything ships."],
+        claims: ["Claims Register", "Filter public-safe, pending, and blocked claims."],
+        technical: ["Technical Discovery", "Track source access, deployment, analytics, and rollback facts."],
+        copy: ["Copy Center", "Copy founder and technical asks."],
+        state: ["State", "Export, import, and preserve local operating state."]
+      };
+      document.getElementById("viewTitle").textContent = titles[viewId][0];
+      document.getElementById("viewSubtitle").textContent = titles[viewId][1];
+      location.hash = viewId;
+    }
+
+    function wireEvents() {
+      document.querySelectorAll(".nav-btn").forEach((button) => {
+        button.addEventListener("click", () => setView(button.dataset.view));
+      });
+      document.getElementById("copyUrlBtn").addEventListener("click", () => copyText(location.href.split("#")[0], "Link copied"));
+      document.getElementById("printBtn").addEventListener("click", () => window.print());
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        if (confirm("Reset all local edits in this browser?")) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
+      });
+      document.getElementById("copyFounderBtn").addEventListener("click", () => copyText(state.copy.founderAsk, "Founder ask copied"));
+      document.getElementById("copyTechBtn").addEventListener("click", () => copyText(state.copy.technicalAsk, "Technical ask copied"));
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", () => copyText(document.getElementById(button.dataset.copy).textContent));
+      });
+      document.getElementById("workstreamSearch").addEventListener("input", renderWorkstreams);
+      document.getElementById("statusFilter").addEventListener("change", renderWorkstreams);
+      document.getElementById("ownerFilter").addEventListener("change", renderWorkstreams);
+      document.getElementById("claimSearch").addEventListener("input", renderClaims);
+      document.getElementById("claimFilter").addEventListener("change", renderClaims);
+      document.getElementById("claimTypeFilter").addEventListener("change", renderClaims);
+      document.getElementById("openExportBtn").addEventListener("click", openExportModal);
+      document.getElementById("closeModalBtn").addEventListener("click", () => document.getElementById("modalBackdrop").classList.remove("open"));
+      document.getElementById("downloadStateBtn").addEventListener("click", downloadState);
+      document.getElementById("copyStateBtn").addEventListener("click", () => copyText(exportState(), "State copied"));
+      document.getElementById("localNotes").addEventListener("input", (event) => {
+        state.localNotes = event.target.value;
+        saveState();
+      });
+      document.getElementById("importStateFile").addEventListener("change", async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const text = await file.text();
+        try {
+          const imported = JSON.parse(text);
+          const nextState = imported.state || imported;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(mergeDefaults(structuredClone(defaultData), nextState), null, 2));
+          showToast("State imported");
+          setTimeout(() => location.reload(), 500);
+        } catch (error) {
+          showToast("Import failed");
+        }
+      });
+    }
+
+    function init() {
+      renderMetrics();
+      renderTasks();
+      renderBlockers();
+      renderOwners();
+      renderWorkstreams();
+      renderApprovals();
+      renderClaims();
+      renderTechnical();
+      renderCopy();
+      renderState();
+      wireEvents();
+      const initialView = location.hash.replace("#", "");
+      if (initialView && document.getElementById(initialView)) setView(initialView);
+    }
+
+    init();
+  </script>
+</body>
+</html>

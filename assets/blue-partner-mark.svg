@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Blue PartnerAI command center mark</title>
+  <desc id="desc">A shield shaped route mark for the Blue PartnerAI command center.</desc>
+  <rect width="96" height="96" rx="20" fill="#f8fbff"/>
+  <path d="M48 10 78 22v22c0 20-12 34-30 43C30 78 18 64 18 44V22l30-12Z" fill="#1f5eff"/>
+  <path d="M31 58c8-12 17-19 34-22" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="31" cy="58" r="6" fill="#23b59c"/>
+  <circle cx="65" cy="36" r="6" fill="#ffbf3f"/>
+</svg>
