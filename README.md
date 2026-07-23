@@ -12,4 +12,5 @@ Open `index.html` directly, or run a static server from this folder.
 - It does not contain credentials or secret values.
 - Browser edits are saved to localStorage only.
 - Export/import is available from the interface for sharing operating-state snapshots.
+- The Social Proof tab tracks public recognition, source status, agency-reference limits, and the roadmap from credibility evidence to measured proof.
 - The Case Study tab summarizes the 16th JDC digital court processing white paper as strategy evidence, includes an evidence-collection CTA, links verified source context, and keeps measured-outcome gaps explicit.

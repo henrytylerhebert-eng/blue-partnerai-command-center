@@ -49,6 +49,10 @@
       cursor: pointer;
     }
 
+    a {
+      overflow-wrap: anywhere;
+    }
+
     button:focus,
     input:focus,
     select:focus,
@@ -275,6 +279,7 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      min-width: 0;
     }
 
     .metric {
@@ -329,6 +334,11 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(300px, 0.42fr);
       gap: 14px;
+    }
+
+    .content-grid > *,
+    .case-grid > * {
+      min-width: 0;
     }
 
     .case-hero {
@@ -459,7 +469,7 @@
       border: 1px solid transparent;
       font-size: 12px;
       font-weight: 700;
-      white-space: nowrap;
+      white-space: normal;
     }
 
     .badge:before {
@@ -544,6 +554,7 @@
 
     .card-head {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       gap: 10px;
       align-items: flex-start;
@@ -553,6 +564,8 @@
     .card-title {
       font-weight: 750;
       margin: 0;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .card p {
@@ -791,6 +804,10 @@
           <svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l3 3v15H6V3Z M9 8h6M9 12h6M9 16h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Claims
         </button>
+        <button class="nav-btn" data-view="social-proof" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 19h16M7 16V9M12 16V5M17 16v-4M5 9l7-5 7 5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Social Proof
+        </button>
         <button class="nav-btn" data-view="case-study" type="button">
           <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 0 1 2-2h10l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z M8 13h8M8 17h6M15 3v5h5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Case Study
@@ -834,6 +851,7 @@
         <div class="toolbar">
           <button class="ghost-btn" id="copyFounderBtn" type="button">Copy founder ask</button>
           <button class="ghost-btn" id="copyTechBtn" type="button">Copy technical ask</button>
+          <button class="ghost-btn" id="copySocialBtn" type="button">Copy social proof brief</button>
           <button class="ghost-btn" id="copyCaseBtn" type="button">Copy case brief</button>
           <button class="primary-btn" id="openExportBtn" type="button">Export state</button>
         </div>
@@ -855,12 +873,12 @@
           </div>
           <div class="metric">
             <div class="label">Open blockers</div>
-            <div class="value" id="blockerCount">5</div>
+            <div class="value" id="blockerCount">6</div>
             <div class="sub">Critical path unresolved</div>
           </div>
           <div class="metric">
             <div class="label">Draft assets</div>
-            <div class="value">8</div>
+            <div class="value">9</div>
             <div class="sub">Ready for review</div>
           </div>
           <div class="metric">
@@ -971,6 +989,88 @@
             </div>
           </div>
           <div id="claimList" class="claim-list"></div>
+        </div>
+      </section>
+
+      <section id="social-proof" class="view hidden">
+        <div class="case-hero">
+          <div class="panel-head">
+            <div>
+              <h3 id="socialTitle">Social Proof And Validation Record</h3>
+              <p id="socialSubtitle"></p>
+            </div>
+            <button class="primary-btn" data-copy="socialProofBriefCopy" type="button">Copy brief</button>
+          </div>
+          <div class="quote-panel" id="socialGroundTruth"></div>
+          <div class="pill-list" id="socialPills"></div>
+        </div>
+
+        <div class="content-grid" style="margin-bottom:14px;">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Validation CTA</h3>
+                <p class="note">Use this to convert credibility into measured proof.</p>
+              </div>
+              <button class="ghost-btn" data-copy="socialProofAskCopy" type="button">Copy ask</button>
+            </div>
+            <p id="socialCta"></p>
+            <div class="quote-panel" id="socialLimit"></div>
+            <textarea id="socialProofAskCopy" class="hidden"></textarea>
+          </div>
+          <div class="panel">
+            <h3>Source Links</h3>
+            <p class="note">Public sources that support identity, ecosystem, award, and media context.</p>
+            <div id="socialSources" class="case-section"></div>
+          </div>
+        </div>
+
+        <div class="case-grid">
+          <div class="panel">
+            <h3>Validation Standard</h3>
+            <div id="socialStandard" class="case-section"></div>
+          </div>
+          <div class="panel">
+            <h3>Strongest Evidence</h3>
+            <div id="socialEvidence" class="case-section"></div>
+          </div>
+          <div class="panel">
+            <h3>Does Not Prove</h3>
+            <div id="socialLimits" class="case-section"></div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <h3>What It Validates</h3>
+            <div id="socialValidates" class="case-section"></div>
+          </div>
+          <div class="panel">
+            <h3>Agency Status Ledger</h3>
+            <p class="note">Do not describe all named agencies as active pilots until reconciled.</p>
+            <div id="socialAgencies" class="case-section"></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <div class="panel-head">
+            <div>
+              <h3>Social Proof To Measured Proof Roadmap</h3>
+              <p class="note">Each stage upgrades credibility toward evidence that can support public performance claims.</p>
+            </div>
+          </div>
+          <div id="socialRoadmap" class="task-list"></div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <div class="panel-head">
+            <div>
+              <h3>Evidence Register</h3>
+              <p class="note">Evidence status for meeting reference and founder approval.</p>
+            </div>
+          </div>
+          <div id="socialRegister" class="claim-list"></div>
+          <textarea id="socialProofBriefCopy" class="hidden"></textarea>
         </div>
       </section>
 
@@ -1157,7 +1257,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
 
   <script>
-    const STORAGE_KEY = "bluePartnerCommandCenterState.v2";
+    const STORAGE_KEY = "bluePartnerCommandCenterState.v3";
 
     const defaultData = {
       activated: "2026-07-16",
@@ -1179,6 +1279,7 @@
       tasks: [
         { id: "send-founder", title: "Send founder approval packet to Ryan and Sarah", status: "Yellow", owner: "Tyler", file: "approvals/FOUNDER-APPROVAL-PACKET.md" },
         { id: "send-tech", title: "Send technical discovery checklist to Ryan or technical owner", status: "Red", owner: "Tyler", file: "technical/TECHNICAL-DISCOVERY.md" },
+        { id: "send-social-proof", title: "Send social proof validation record for founder approval", status: "Yellow", owner: "Tyler", file: "social-proof/SOCIAL-PROOF-VALIDATION-RECORD.md" },
         { id: "schedule-session", title: "Ask for a 30-minute approval session", status: "Yellow", owner: "Tyler", file: "ACTIVE-COMMAND-CENTER.md" },
         { id: "update-claims", title: "Update public claims register after founder responses", status: "Yellow", owner: "Tyler", file: "claims/PUBLIC-CLAIMS-REGISTER.md" },
         { id: "update-gonogo", title: "Update go/no-go decision with dated status row", status: "Yellow", owner: "Tyler", file: "GO-NO-GO-DECISION.md" },
@@ -1189,7 +1290,8 @@
         { id: "technical-source", name: "Technical source access missing", impact: "Website/app launch cannot be verified or deployed", owner: "Ryan / technical owner", resolution: "Complete technical discovery checklist" },
         { id: "security-evidence", name: "Security evidence missing", impact: "CJIS/security claims cannot be expanded safely", owner: "Ryan / technical owner", resolution: "Provide evidence package or approved limited wording" },
         { id: "analytics-implementation", name: "Analytics implementation missing", impact: "Launch cannot be measured", owner: "Technical / analytics owner", resolution: "Select stack and verify test events after source access" },
-        { id: "agency-permission", name: "Agency reference permission unknown", impact: "Named pilot/customer references may be unsafe", owner: "Founders", resolution: "Approve exact agency naming rules" }
+        { id: "agency-permission", name: "Agency reference permission unknown", impact: "Named pilot/customer references may be unsafe", owner: "Founders", resolution: "Approve exact agency naming rules" },
+        { id: "agency-ledger", name: "Agency status ledger unreconciled", impact: "St. Martinville, Duson, and Carencro cannot all be described as active pilots", owner: "Ryan + Sarah", resolution: "Confirm current status, scope, and permission to name each agency" }
       ],
       approvals: [
         { id: "product-scope", item: "Product scope", prompt: "Confirm whether the deployable offer is Chat + Maps + Reporting or a narrower pilot wedge.", decision: "Pending" },
@@ -1198,7 +1300,9 @@
         { id: "body-cam", item: "Body-cam status", prompt: "Approve, block, or roadmap-only any public body-cam mention.", decision: "Pending" },
         { id: "translation", item: "Translation status", prompt: "Approve, block, or roadmap-only any public translation mention.", decision: "Pending" },
         { id: "award-naming", item: "Award naming", prompt: "Confirm Innovate South vs. Tech Tank and whether the amount is public-safe.", decision: "Pending" },
-        { id: "proof-points", item: "Public proof points", prompt: "Approve 100+ ride-alongs, Citizens Academy, St. Martinville, UL Lafayette/IRI, OM membership.", decision: "Pending" },
+        { id: "proof-points", item: "Public proof points", prompt: "Approve ride-along count, Citizens Academy, St. Martinville, Duson, Carencro, UL Lafayette/IRI, OM membership, Innovate South, and Out to Lunch references.", decision: "Pending" },
+        { id: "social-proof-boundaries", item: "Social proof boundaries", prompt: "Confirm social proof can be used as attention/access credibility, not product-performance proof.", decision: "Pending" },
+        { id: "agency-status", item: "Agency status ledger", prompt: "Confirm the current status and permission-to-name rules for St. Martinville, Duson, and Carencro.", decision: "Pending" },
         { id: "security-claims", item: "Security/compliance wording", prompt: "Confirm CJIS-aligned vs. CJIS-compliant and evidence available.", decision: "Pending" },
         { id: "cta", item: "Primary CTA", prompt: "Choose Schedule a pilot demo, Request early access, Let's talk, or another CTA.", decision: "Pending" },
         { id: "audience", item: "Outbound audience", prompt: "Approve initial target list and sender identity.", decision: "Pending" }
@@ -1212,17 +1316,109 @@
         { id: "read-only", type: "Security", claim: "Blue Partner uses read-only system connections.", source: "Company profile", status: "Pending founder approval", note: "Needs technical owner confirmation" },
         { id: "supportive", type: "Baseline", claim: "Blue Partner is supportive, not directive.", source: "Company profile", status: "Approved source", note: "Core messaging rule" },
         { id: "authorship", type: "Baseline", claim: "Officers keep judgment and authorship.", source: "Company profile", status: "Approved source", note: "Required for Reporting language" },
-        { id: "ride-alongs", type: "Proof", claim: "Lafayette PD field immersion included 100+ ride-along hours.", source: "Company profile", status: "Pending founder approval", note: "Confirm permission and wording" },
-        { id: "st-martinville", type: "Proof", claim: "St. Martinville PD is a pilot site.", source: "Company profile", status: "Pending founder approval", note: "Confirm permission to name" },
-        { id: "award", type: "Proof", claim: "Blue Partner won 2nd Place and Crowd Favorite at Innovate South.", source: "Company profile", status: "Pending founder approval", note: "Confirm official name and amount" },
+        { id: "lafayette-company", type: "Baseline", claim: "Blue Partner is a Lafayette, Louisiana public-safety technology company.", source: "Blue Partner website / LinkedIn", status: "Approved source", note: "Safe after founder final review" },
+        { id: "founded-2024", type: "Baseline", claim: "Blue Partner was founded in 2024 according to its LinkedIn company profile.", source: "Blue Partner LinkedIn", status: "Approved source", note: "Reconcile with the 2023 founding date reported by Out to Lunch before timeline copy" },
+        { id: "ride-alongs", type: "Proof", claim: "Lafayette PD field immersion included 100+ or 150+ ride-along hours.", source: "Company profile / LinkedIn", status: "Pending founder approval", note: "Confirm exact number, permission, and wording" },
+        { id: "st-martinville", type: "Proof", claim: "St. Martinville PD relationship.", source: "Older profile / Out to Lunch", status: "Pending founder approval", note: "Reconcile current status and permission to name before calling it active" },
+        { id: "duson", type: "Proof", claim: "Duson PD relationship.", source: "Out to Lunch", status: "Pending founder approval", note: "Publicly reported; exact status and permission to name remain unverified" },
+        { id: "carencro", type: "Proof", claim: "Carencro PD pilot activity.", source: "Founder-reported", status: "Pending founder approval", note: "Documentation and public naming permission needed before external use" },
+        { id: "award", type: "Proof", claim: "Blue Partner won 2nd Place and Crowd Favorite at Innovate South / Tech Tank.", source: "Robinson Ventures recap", status: "Approved source", note: "Confirm official award naming before polished public copy" },
+        { id: "ul-iri", type: "Proof", claim: "UL Lafayette computer-science students collaborated with Blue Partner through an IRI / Opportunity Machine partnership.", source: "UL Lafayette / IRI article", status: "Approved source", note: "Not proof of product certification" },
+        { id: "om-ecosystem", type: "Proof", claim: "Blue Partner is tied to Opportunity Machine and the UL Lafayette / IRI ecosystem.", source: "UL Lafayette / IRI article and Opportunity Machine context", status: "Approved source", note: "Do not imply investment or certification" },
+        { id: "media-feature", type: "Proof", claim: "Blue Partner received independent regional media coverage in Laying Down The AI Law.", source: "It's Acadiana / Out to Lunch", status: "Approved source", note: "Media coverage is not active-contract proof" },
+        { id: "social-proof", type: "Proof", claim: "Blue Partner has meaningful social proof and market-access evidence.", source: "Social proof validation record", status: "Pending founder approval", note: "Strategy-safe; does not prove product-market fit, revenue, or measured outcomes" },
         { id: "jdc-case-study", type: "Proof", claim: "16th JDC digital court processing provides a workflow modernization case study.", source: "User-provided white paper draft", status: "Pending founder approval", note: "Use as strategy reference; measurements still need validation" },
         { id: "cjis-aligned", type: "Security", claim: "Blue Partner is CJIS-aligned.", source: "Company profile", status: "Pending founder approval", note: "Confirm phrase and evidence package" },
         { id: "ai-generated", type: "Blocked", claim: "AI-generated police reports.", source: "Older docs", status: "Stale / do not use", note: "Conflicts with current profile framing" },
         { id: "bodycam-live", type: "Blocked", claim: "Confirmed body-cam integration.", source: "Older docs", status: "Do not use until confirmed", note: "Not current profile/site framing" },
         { id: "translation-live", type: "Blocked", claim: "Confirmed translation feature.", source: "Older docs", status: "Do not use until confirmed", note: "Not current profile/site framing" },
         { id: "verified-metrics", type: "Blocked", claim: "Verified customer metrics or hours saved.", source: "No source found", status: "Stale / do not use", note: "No measurements found" },
-        { id: "jdc-roi", type: "Blocked", claim: "Quantified 16th JDC ROI or time savings.", source: "White paper evidence gaps", status: "Stale / do not use", note: "The white paper says measurements still need collection" }
+        { id: "jdc-roi", type: "Blocked", claim: "Quantified 16th JDC ROI or time savings.", source: "White paper evidence gaps", status: "Stale / do not use", note: "The white paper says measurements still need collection" },
+        { id: "pmf", type: "Blocked", claim: "Product-market fit.", source: "No sufficient evidence found", status: "Do not use until confirmed", note: "Social proof validates attention and access, not conversion or retention" },
+        { id: "revenue", type: "Blocked", claim: "Recurring revenue or paid customer conversion.", source: "No sufficient public evidence found", status: "Do not use until confirmed", note: "Needs contract, revenue, or conversion evidence" },
+        { id: "active-agencies", type: "Blocked", claim: "All named agencies are active pilots.", source: "Agency status ledger unresolved", status: "Do not use until confirmed", note: "St. Martinville, Duson, and Carencro status must be reconciled" },
+        { id: "cjis-certified", type: "Blocked", claim: "CJIS compliance certification.", source: "No security evidence package found", status: "Do not use until confirmed", note: "Use only founder-approved and evidence-backed wording" },
+        { id: "outcomes", type: "Blocked", claim: "Report accuracy, time savings, prosecutor acceptance, or court admissibility.", source: "No sufficient outcome data found", status: "Do not use until confirmed", note: "Requires measured pilot data" }
       ],
+      socialProof: {
+        title: "Blue Partner Social Proof And Validation Record",
+        subtitle: "A meeting-ready credibility layer for external recognition, market engagement, institutional relationships, customer discovery, and public validation.",
+        groundTruth: "Blue Partner has earned meaningful market attention and stakeholder access. That supports credibility and the right to run structured pilots. It does not yet prove product-market fit, revenue, active deployment, security certification, or measured operational outcomes.",
+        cta: "Use each meeting to convert one piece of social proof into measured proof: source approval, agency permission, pilot documents, usage data, outcome metrics, or approved testimonials.",
+        limit: "Public visibility is evidence of attention, engagement, participation, access, and third-party recognition. It is not product-performance evidence.",
+        pills: ["Company identity", "Founder-market fit", "University collaboration", "Startup ecosystem", "Pitch recognition", "Media coverage", "Agency ledger"],
+        sourceLinks: [
+          { label: "Blue Partner website", url: "https://www.bluepartner.ai/" },
+          { label: "Blue Partner LinkedIn", url: "https://www.linkedin.com/company/blue-partner-ai" },
+          { label: "UL Lafayette / IRI Blue Partner article", url: "https://informaticsinstitute.louisiana.edu/news-events/news/20250108/computer-science-students-work-law-enforcement-technology-company-blue" },
+          { label: "Opportunity Machine", url: "https://opportunitymachine.org/" },
+          { label: "Robinson Ventures Innovate South recap", url: "https://www.robinsonventures.com/news/article/current/2025/05/20/100048/innovate-south-conference-2025" },
+          { label: "It's Acadiana / Out to Lunch feature", url: "https://itsacadiana.com/2026/04/19/laying-down-the-ai-law/" }
+        ],
+        standard: [
+          { category: "Independently verified", body: "A credible third party publicly documented the event, relationship, recognition, or company activity." },
+          { category: "Company-verified", body: "Blue Partner published the information through its website, LinkedIn page, or company-authored public material." },
+          { category: "Founder-reported", body: "Ryan Bourque or Sarah Brasseaux publicly described the activity, result, or relationship." },
+          { category: "Not yet verified", body: "The claim requires agency records, agreements, pilot data, contracts, stakeholder testimony, or approved measurements." }
+        ],
+        strongest: [
+          "UL Lafayette / Informatics Research Institute collaboration.",
+          "Opportunity Machine ecosystem participation.",
+          "Innovate South second-place recognition.",
+          "Innovate South Crowd Favorite recognition.",
+          "It's Acadiana / Out to Lunch media feature.",
+          "Publicly reported agency relationships, with current status unresolved.",
+          "Public company profile and website."
+        ],
+        validates: [
+          "Problem credibility around reporting burden, fragmented systems, patrol navigation, and court/prosecutorial handoffs.",
+          "Founder-market fit across law enforcement, courts, government technology, startup development, and product research.",
+          "Customer access to officers, police chiefs, agency stakeholders, court personnel, startup mentors, university collaborators, and regional media.",
+          "Ecosystem validation through Opportunity Machine, UL Lafayette / IRI, Innovate South, Robinson Ventures coverage, and Out to Lunch."
+        ],
+        doesNotProve: [
+          "Product-market fit.",
+          "Recurring revenue or paid customer conversion.",
+          "Commercial scalability.",
+          "Procurement readiness.",
+          "Security certification or CJIS compliance.",
+          "Report accuracy, legal sufficiency, or court admissibility.",
+          "Reduced report-writing time or agency cost.",
+          "Increased prosecutor acceptance or case closures.",
+          "Agency retention, renewal, valuation, or acquisition readiness."
+        ],
+        agencies: [
+          { name: "St. Martinville Police Department", evidence: "Publicly reported by It's Acadiana / Out to Lunch; later founder context says the effort paused after a leadership transition.", status: "Current status unverified", needed: "Founder confirmation, agency permission, current status, pilot/agreement evidence." },
+          { name: "Duson Police Department", evidence: "Publicly reported by It's Acadiana / Out to Lunch; also appears in later founder discussions.", status: "Exact status unverified", needed: "Founder confirmation, agency permission, current status, pilot/agreement evidence." },
+          { name: "Carencro Police Department", evidence: "Founder-reported later pilot activity.", status: "Founder-reported only", needed: "Pilot documentation, permission to name, active/inactive status, scope, measurement plan." }
+        ],
+        roadmap: [
+          { stage: "1. Source archive", goal: "Preserve public evidence.", collect: "Website, LinkedIn, UL, OM, Robinson Ventures, and Out to Lunch links plus dated screenshots or PDFs.", output: "Source-backed credibility narrative.", status: "Source-backed credibility" },
+          { stage: "2. Founder approval", goal: "Confirm wording and public-use permission.", collect: "Written approval from Ryan and Sarah.", output: "Approved public proof points.", status: "Founder approved" },
+          { stage: "3. Agency ledger", goal: "Reconcile St. Martinville, Duson, and Carencro.", collect: "Agency permission, dates, status, scope, and owner.", output: "Accurate agency-reference language.", status: "Needs reconciliation" },
+          { stage: "4. Pilot evidence", goal: "Prove operational activity.", collect: "Signed pilot docs, rollout notes, user list, and training notes.", output: "Verified pilot status.", status: "Not yet verified" },
+          { stage: "5. Usage evidence", goal: "Prove product use.", collect: "Login or activity counts, workflow events, and support notes.", output: "Product-use evidence.", status: "No measurements found" },
+          { stage: "6. Outcome evidence", goal: "Prove efficacy.", collect: "Baseline, current state, time saved, report completeness, and prosecutor feedback.", output: "Measured public proof after approval.", status: "No measurements found" },
+          { stage: "7. Commercial evidence", goal: "Prove market conversion.", collect: "Paid contracts, renewals, pipeline conversion, and approved testimonials.", output: "Revenue and product-market evidence.", status: "Not yet verified" }
+        ],
+        register: [
+          { evidence: "Official Blue Partner public website", source: "Blue Partner website", status: "Company-verified", note: "Company-authored positioning." },
+          { evidence: "Official Blue Partner LinkedIn profile", source: "Blue Partner LinkedIn", status: "Company-verified", note: "Company identity and public-safety positioning." },
+          { evidence: "Ryan identified as founder and CEO", source: "UL Lafayette / IRI", status: "Independently verified", note: "Safe with source citation." },
+          { evidence: "Sarah identified as product manager", source: "UL Lafayette / IRI", status: "Independently verified at publication date", note: "Use current title only after founder review." },
+          { evidence: "University student collaboration", source: "UL Lafayette / IRI", status: "Independently verified", note: "Not a university product certification." },
+          { evidence: "Opportunity Machine participation", source: "UL Lafayette / IRI and OM context", status: "Independently verified", note: "Do not imply investment." },
+          { evidence: "Innovate South finalist, second place, and Crowd Favorite", source: "Robinson Ventures", status: "Independently verified", note: "Confirm exact public award naming." },
+          { evidence: "Independent media feature", source: "It's Acadiana / Out to Lunch", status: "Independently verified", note: "Media coverage is not active-contract proof." },
+          { evidence: "St. Martinville relationship", source: "It's Acadiana / Out to Lunch", status: "Publicly reported; current status unverified", note: "Do not call active without confirmation." },
+          { evidence: "Duson relationship", source: "It's Acadiana / Out to Lunch", status: "Publicly reported; exact status unverified", note: "Do not call active without confirmation." },
+          { evidence: "Carencro pilot", source: "Founder-reported", status: "Documentation needed", note: "Internal only until documented." },
+          { evidence: "Digital 72-hour appearance work", source: "Ryan interview", status: "Founder-reported", note: "Strategy case study until artifact-backed." },
+          { evidence: "Product performance results", source: "No sufficient independent evidence", status: "Not yet verified", note: "Do not claim." },
+          { evidence: "Revenue and customer conversion", source: "No sufficient public evidence", status: "Not yet verified", note: "Do not claim." }
+        ],
+        ask: `Social proof validation ask\n\nBlue Partner has credible public and company-authored evidence of attention, market access, ecosystem support, university collaboration, pitch recognition, media coverage, and reported agency engagement.\n\nCan you help us approve what is public-safe and identify the next evidence needed to upgrade social proof into measured proof?\n\nPlease confirm:\n- Which sources may be cited publicly.\n- Exact Innovate South / Tech Tank award wording.\n- Exact Lafayette PD ride-along count and permission to mention it.\n- Current status and permission-to-name rules for St. Martinville, Duson, and Carencro.\n- Whether Carencro has pilot documentation that can be safely referenced.\n- Which agency artifacts, usage data, measurements, or testimonials can be collected next.\n\nDo not upgrade social proof into product-performance claims until usage, outcome, security, revenue, or agency evidence exists and is approved.`
+      },
       caseStudy: {
         title: "16th JDC Digital Court Processing",
         subtitle: "A practical case study in moving a time-sensitive justice workflow from physical transport and paper handoffs to video appearances and digital document exchange.",
@@ -1380,6 +1576,7 @@
       result.blockers = mergeById(base.blockers, saved.blockers);
       result.approvals = mergeById(base.approvals, saved.approvals);
       result.claims = mergeById(base.claims, saved.claims);
+      result.socialProof = base.socialProof;
       result.caseStudy = base.caseStudy;
       result.techAnswers = saved.techAnswers || {};
       result.taskDone = saved.taskDone || {};
@@ -1398,9 +1595,9 @@
     }
 
     function statusClass(status) {
-      if (/green|approved source/i.test(status)) return "green";
-      if (/yellow|pending/i.test(status)) return "yellow";
-      if (/red|stale|do not use/i.test(status)) return "red";
+      if (/green|approved source|independently verified|company-verified|source-backed|founder approved/i.test(status)) return "green";
+      if (/yellow|pending|publicly reported|documentation needed|founder-reported|needs reconciliation/i.test(status)) return "yellow";
+      if (/red|stale|do not use|not yet verified|no measurements found/i.test(status)) return "red";
       return "unknown";
     }
 
@@ -1587,6 +1784,70 @@
       </article>`).join("");
     }
 
+    function socialProofBrief() {
+      const s = state.socialProof;
+      return `${s.title}\n\n${s.subtitle}\n\nGround truth:\n${s.groundTruth}\n\nCTA:\n${s.cta}\n\nLimit:\n${s.limit}\n\nStrongest evidence:\n${s.strongest.map((item) => `- ${item}`).join("\n")}\n\nWhat this validates:\n${s.validates.map((item) => `- ${item}`).join("\n")}\n\nWhat this does not prove:\n${s.doesNotProve.map((item) => `- ${item}`).join("\n")}\n\nAgency status ledger:\n${s.agencies.map((item) => `- ${item.name}: ${item.status}. Evidence: ${item.evidence} Needed: ${item.needed}`).join("\n")}\n\nRoadmap:\n${s.roadmap.map((item) => `- ${item.stage}: ${item.goal} Collect: ${item.collect}`).join("\n")}`;
+    }
+
+    function renderSocialProof() {
+      const s = state.socialProof;
+      document.getElementById("socialTitle").textContent = s.title;
+      document.getElementById("socialSubtitle").textContent = s.subtitle;
+      document.getElementById("socialGroundTruth").textContent = s.groundTruth;
+      document.getElementById("socialCta").textContent = s.cta;
+      document.getElementById("socialLimit").textContent = s.limit;
+      document.getElementById("socialPills").innerHTML = s.pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("");
+      document.getElementById("socialSources").innerHTML = s.sourceLinks.map((source) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(source.label)}</p>
+          ${badge("Approved source")}
+        </div>
+        <p><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.url)}</a></p>
+      </article>`).join("");
+      document.getElementById("socialStandard").innerHTML = s.standard.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.category)}</p>
+          ${badge(/not yet|founder/i.test(item.category) ? "Pending founder approval" : "Approved source")}
+        </div>
+        <p>${escapeHtml(item.body)}</p>
+      </article>`).join("");
+      document.getElementById("socialEvidence").innerHTML = s.strongest.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item)}</p>
+          ${badge(/unresolved/i.test(item) ? "Pending founder approval" : "Approved source")}
+        </div>
+      </article>`).join("");
+      renderSimpleCards("socialLimits", s.doesNotProve, "Do not use until confirmed");
+      renderSimpleCards("socialValidates", s.validates, "Pending founder approval");
+      document.getElementById("socialAgencies").innerHTML = s.agencies.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.name)}</p>
+          ${badge(item.status)}
+        </div>
+        <p><strong>Evidence:</strong> ${escapeHtml(item.evidence)}</p>
+        <p><strong>Needed:</strong> ${escapeHtml(item.needed)}</p>
+      </article>`).join("");
+      document.getElementById("socialRoadmap").innerHTML = s.roadmap.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.stage)}</p>
+          ${badge(item.status)}
+        </div>
+        <p><strong>Goal:</strong> ${escapeHtml(item.goal)}</p>
+        <p><strong>Collect:</strong> ${escapeHtml(item.collect)}</p>
+        <p><strong>Output:</strong> ${escapeHtml(item.output)}</p>
+      </article>`).join("");
+      document.getElementById("socialRegister").innerHTML = s.register.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.evidence)}</p>
+          ${badge(item.status)}
+        </div>
+        <p><strong>Source:</strong> ${escapeHtml(item.source)}</p>
+        <p>${escapeHtml(item.note)}</p>
+      </article>`).join("");
+      document.getElementById("socialProofBriefCopy").textContent = socialProofBrief();
+      document.getElementById("socialProofAskCopy").textContent = s.ask;
+    }
+
     function caseStudyBrief() {
       const c = state.caseStudy;
       return `${c.title}\n\n${c.subtitle}\n\nStrategic lesson:\n${c.lesson}\n\nCTA:\n${c.cta}\n\nEvidence status:\n${c.sourceStatus}\n\nWhat this shows:\n${c.strategy.map((item) => `- ${item}`).join("\n")}\n\nVerified context:\n${c.verified.map((item) => `- ${item}`).join("\n")}\n\nReported observations requiring validation:\n${c.reported.map((item) => `- ${item}`).join("\n")}\n\nRoadmap to prove efficacy:\n${c.roadmap.map((item) => `- ${item.stage}: ${item.goal} Collect: ${item.collect}`).join("\n")}\n\nDo not overclaim. Evidence gaps before formal ROI/publication:\n${c.gaps.map((item) => `- ${item}`).join("\n")}`;
@@ -1703,6 +1964,7 @@
         workstreams: ["Workstreams", "Track owners, statuses, notes, and next actions."],
         approvals: ["Approvals", "Capture founder decisions before anything ships."],
         claims: ["Claims Register", "Filter public-safe, pending, and blocked claims."],
+        "social-proof": ["Social Proof", "Use public recognition and market-access evidence without turning it into performance claims."],
         "case-study": ["Case Study", "Use the 16th JDC white paper as evidence in action without overclaiming."],
         technical: ["Technical Discovery", "Track source access, deployment, analytics, and rollback facts."],
         copy: ["Copy Center", "Copy founder and technical asks."],
@@ -1717,6 +1979,10 @@
       document.querySelectorAll(".nav-btn").forEach((button) => {
         button.addEventListener("click", () => setView(button.dataset.view));
       });
+      window.addEventListener("hashchange", () => {
+        const viewId = location.hash.replace("#", "");
+        if (viewId && document.getElementById(viewId)) setView(viewId);
+      });
       document.getElementById("copyUrlBtn").addEventListener("click", () => copyText(location.href.split("#")[0], "Link copied"));
       document.getElementById("printBtn").addEventListener("click", () => window.print());
       document.getElementById("resetBtn").addEventListener("click", () => {
@@ -1727,6 +1993,7 @@
       });
       document.getElementById("copyFounderBtn").addEventListener("click", () => copyText(state.copy.founderAsk, "Founder ask copied"));
       document.getElementById("copyTechBtn").addEventListener("click", () => copyText(state.copy.technicalAsk, "Technical ask copied"));
+      document.getElementById("copySocialBtn").addEventListener("click", () => copyText(socialProofBrief(), "Social proof brief copied"));
       document.getElementById("copyCaseBtn").addEventListener("click", () => copyText(caseStudyBrief(), "Case brief copied"));
       document.querySelectorAll("[data-copy]").forEach((button) => {
         button.addEventListener("click", () => copyText(document.getElementById(button.dataset.copy).textContent));
@@ -1769,6 +2036,7 @@
       renderWorkstreams();
       renderApprovals();
       renderClaims();
+      renderSocialProof();
       renderCaseStudy();
       renderTechnical();
       renderCopy();
