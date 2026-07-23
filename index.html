@@ -331,6 +331,98 @@
       gap: 14px;
     }
 
+    .case-hero {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .case-hero h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .case-hero p {
+      color: var(--muted);
+      max-width: 980px;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .case-section {
+      display: grid;
+      gap: 10px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f8fafc;
+      color: #30415f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 9px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid #e9eef5;
+      border-radius: 7px;
+      background: #fbfcff;
+    }
+
+    .step:before {
+      counter-increment: step;
+      content: counter(step);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #eaf2ff;
+      color: #1647d2;
+      font-weight: 800;
+    }
+
+    .quote-panel {
+      border-left: 5px solid var(--blue);
+      background: #f8fbff;
+      border-radius: var(--radius);
+      padding: 12px;
+      color: #26344d;
+      font-weight: 700;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -594,7 +686,8 @@
       }
 
       .topbar,
-      .content-grid {
+      .content-grid,
+      .case-grid {
         grid-template-columns: 1fr;
       }
 
@@ -698,6 +791,10 @@
           <svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l3 3v15H6V3Z M9 8h6M9 12h6M9 16h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Claims
         </button>
+        <button class="nav-btn" data-view="case-study" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 0 1 2-2h10l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z M8 13h8M8 17h6M15 3v5h5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Case Study
+        </button>
         <button class="nav-btn" data-view="technical" type="button">
           <svg viewBox="0 0 24 24" fill="none"><path d="M8 8h8v8H8V8Z M3 10h3M3 14h3M18 10h3M18 14h3M10 3v3M14 3v3M10 18v3M14 18v3" stroke-width="2" stroke-linecap="round"/></svg>
           Technical
@@ -737,6 +834,7 @@
         <div class="toolbar">
           <button class="ghost-btn" id="copyFounderBtn" type="button">Copy founder ask</button>
           <button class="ghost-btn" id="copyTechBtn" type="button">Copy technical ask</button>
+          <button class="ghost-btn" id="copyCaseBtn" type="button">Copy case brief</button>
           <button class="primary-btn" id="openExportBtn" type="button">Export state</button>
         </div>
       </div>
@@ -873,6 +971,74 @@
             </div>
           </div>
           <div id="claimList" class="claim-list"></div>
+        </div>
+      </section>
+
+      <section id="case-study" class="view hidden">
+        <div class="case-hero">
+          <div class="panel-head">
+            <div>
+              <h3 id="caseTitle">16th JDC Digital Court Processing</h3>
+              <p id="caseSubtitle"></p>
+            </div>
+            <button class="primary-btn" data-copy="caseBriefCopy" type="button">Copy brief</button>
+          </div>
+          <div class="quote-panel" id="caseLesson"></div>
+          <div class="pill-list" id="casePills"></div>
+        </div>
+
+        <div class="case-grid">
+          <div class="panel">
+            <h3>What It Shows</h3>
+            <div id="caseStrategy" class="case-section"></div>
+          </div>
+          <div class="panel">
+            <h3>Verified Context</h3>
+            <div id="caseVerified" class="case-section"></div>
+          </div>
+          <div class="panel">
+            <h3>Reported, Needs Validation</h3>
+            <div id="caseReported" class="case-section"></div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Replication Model</h3>
+                <p class="note">Use this to connect the dots in meetings.</p>
+              </div>
+            </div>
+            <div id="caseSteps" class="steps"></div>
+          </div>
+          <div class="panel">
+            <h3>Meeting Talking Points</h3>
+            <div id="caseTalkingPoints" class="case-section"></div>
+          </div>
+        </div>
+
+        <div class="content-grid" style="margin-top:14px;">
+          <div class="panel">
+            <h3>Scorecard To Prove It</h3>
+            <div id="caseScorecard" class="case-section"></div>
+          </div>
+          <div class="panel">
+            <h3>Evidence Gaps</h3>
+            <p class="note">Do not claim measured outcomes until these are collected.</p>
+            <div id="caseGaps" class="case-section"></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <div class="panel-head">
+            <div>
+              <h3>Case Study Prompt Pack</h3>
+              <p class="note">Copy into Codex/Claude/ChatGPT to turn the case study into meeting material.</p>
+            </div>
+          </div>
+          <div id="casePrompts" class="case-grid"></div>
+          <textarea id="caseBriefCopy" class="hidden"></textarea>
         </div>
       </section>
 
@@ -1019,12 +1185,92 @@
         { id: "ride-alongs", type: "Proof", claim: "Lafayette PD field immersion included 100+ ride-along hours.", source: "Company profile", status: "Pending founder approval", note: "Confirm permission and wording" },
         { id: "st-martinville", type: "Proof", claim: "St. Martinville PD is a pilot site.", source: "Company profile", status: "Pending founder approval", note: "Confirm permission to name" },
         { id: "award", type: "Proof", claim: "Blue Partner won 2nd Place and Crowd Favorite at Innovate South.", source: "Company profile", status: "Pending founder approval", note: "Confirm official name and amount" },
+        { id: "jdc-case-study", type: "Proof", claim: "16th JDC digital court processing provides a workflow modernization case study.", source: "User-provided white paper draft", status: "Pending founder approval", note: "Use as strategy reference; measurements still need validation" },
         { id: "cjis-aligned", type: "Security", claim: "Blue Partner is CJIS-aligned.", source: "Company profile", status: "Pending founder approval", note: "Confirm phrase and evidence package" },
         { id: "ai-generated", type: "Blocked", claim: "AI-generated police reports.", source: "Older docs", status: "Stale / do not use", note: "Conflicts with current profile framing" },
         { id: "bodycam-live", type: "Blocked", claim: "Confirmed body-cam integration.", source: "Older docs", status: "Do not use until confirmed", note: "Not current profile/site framing" },
         { id: "translation-live", type: "Blocked", claim: "Confirmed translation feature.", source: "Older docs", status: "Do not use until confirmed", note: "Not current profile/site framing" },
-        { id: "verified-metrics", type: "Blocked", claim: "Verified customer metrics or hours saved.", source: "No source found", status: "Stale / do not use", note: "No measurements found" }
+        { id: "verified-metrics", type: "Blocked", claim: "Verified customer metrics or hours saved.", source: "No source found", status: "Stale / do not use", note: "No measurements found" },
+        { id: "jdc-roi", type: "Blocked", claim: "Quantified 16th JDC ROI or time savings.", source: "White paper evidence gaps", status: "Stale / do not use", note: "The white paper says measurements still need collection" }
       ],
+      caseStudy: {
+        title: "16th JDC Digital Court Processing",
+        subtitle: "A practical case study in moving a time-sensitive justice workflow from physical transport and paper handoffs to video appearances and digital document exchange.",
+        lesson: "Faster court processing requires more than digitizing a form. It requires redesigning the movement of people, documents, decisions, and accountability across the justice system.",
+        pills: ["72-hour appearance workflow", "Video appearance", "Cloud document exchange", "Cross-agency ownership", "Strategy evidence"],
+        verified: [
+          "The 16th Judicial District Court serves Iberia, St. Martin, and St. Mary Parishes.",
+          "The court has original jurisdiction over civil and criminal matters in the district.",
+          "Louisiana Code of Criminal Procedure Article 230.1 establishes the 72-hour appearance requirement.",
+          "Louisiana law permits telephone or audio-video appearances when authorized by local rule."
+        ],
+        reported: [
+          "Ryan Bourque served as Director of Information Technology for the 16th Judicial District Court.",
+          "The district used Zoom-enabled iPads for remote judicial appearances.",
+          "Booking and law-enforcement personnel used PDF documents and a cloud folder for document exchange.",
+          "Adoption accelerated after judges made the digital workflow the practical alternative to daily prisoner transport.",
+          "The process reportedly became routine after implementation."
+        ],
+        strategy: [
+          "Shows Blue Partner is rooted in real justice-system workflow, not a generic AI pitch.",
+          "Connects officer-level assistance to court, clerk, prosecutor, jail, and local-government outcomes.",
+          "Frames Blue Partner around faster, more complete, more visible case movement.",
+          "Gives meetings a concrete model for how operational authority and workflow design drive adoption.",
+          "Creates a scorecard for structured pilots without inventing ROI claims."
+        ],
+        steps: [
+          "Define the legal event.",
+          "Map the current workflow.",
+          "Establish a baseline.",
+          "Design the minimum viable workflow.",
+          "Assign authority and ownership.",
+          "Remove the parallel paper process where appropriate.",
+          "Publish the results."
+        ],
+        scorecard: [
+          "Time from arrest to completed judicial appearance.",
+          "Time from booking completion to document submission.",
+          "Time from document submission to judicial review.",
+          "Physical transports avoided.",
+          "Officer or correctional hours recovered.",
+          "Complete submissions on first attempt.",
+          "Missing-document and incorrect-document rates.",
+          "Time from agency completion to prosecutor availability."
+        ],
+        gaps: [
+          "Number of digital appearances processed.",
+          "Number of participating agencies.",
+          "Number of transports avoided.",
+          "Officer or correctional hours recovered.",
+          "Average processing time before and after.",
+          "Statutory compliance impact.",
+          "Missing or incomplete document rate.",
+          "Financial savings.",
+          "Stakeholder satisfaction.",
+          "Effect on bond-setting time and jail length of stay."
+        ],
+        talkingPoints: [
+          "This is what we mean by justice workflow modernization: connecting the person, moving the information, and making the handoff visible.",
+          "The lesson is not that courts need a bigger platform first. The lesson is that clearly owned workflows can convert long-standing friction into routine digital practice.",
+          "Blue Partner should be measured not only by writing speed, but by whether required information reaches the next decision-maker faster and more completely.",
+          "This model gives agencies, courts, clerks, and prosecutors a shared scorecard.",
+          "We should not claim measured outcomes until the follow-up data is collected."
+        ],
+        prompts: [
+          {
+            title: "Meeting Brief",
+            body: "Using the 16th JDC digital court processing case study, create a one-page meeting brief for a public safety partner. Separate verified context, interview-reported observations, strategic relevance to Blue Partner, and evidence gaps. Do not claim measured ROI."
+          },
+          {
+            title: "Pilot Design Prompt",
+            body: "Turn the 16th JDC case study into a 60- to 90-day Blue Partner pilot design. Include legal event, participating stakeholders, baseline metrics, minimum viable workflow, ownership model, scorecard, and approval gates."
+          },
+          {
+            title: "Partner Narrative",
+            body: "Draft a concise partner-facing narrative that explains how Blue Partner connects officer-level assistance to faster court and prosecutorial processing. Use the 16th JDC case as evidence in action, but label reported observations and missing measurements clearly."
+          }
+        ]
+      },
       technical: [
         "Repo location",
         "Repo host and access method",
@@ -1078,6 +1324,7 @@
       result.blockers = mergeById(base.blockers, saved.blockers);
       result.approvals = mergeById(base.approvals, saved.approvals);
       result.claims = mergeById(base.claims, saved.claims);
+      result.caseStudy = { ...base.caseStudy, ...(saved.caseStudy || {}) };
       result.techAnswers = saved.techAnswers || {};
       result.taskDone = saved.taskDone || {};
       result.copy = { ...base.copy, ...(saved.copy || {}) };
@@ -1275,6 +1522,49 @@
       </article>`).join("");
     }
 
+    function renderSimpleCards(containerId, items, status = "Yellow") {
+      document.getElementById(containerId).innerHTML = items.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item)}</p>
+          ${badge(status)}
+        </div>
+      </article>`).join("");
+    }
+
+    function caseStudyBrief() {
+      const c = state.caseStudy;
+      return `${c.title}\n\n${c.subtitle}\n\nStrategic lesson:\n${c.lesson}\n\nWhat this shows:\n${c.strategy.map((item) => `- ${item}`).join("\n")}\n\nVerified context:\n${c.verified.map((item) => `- ${item}`).join("\n")}\n\nReported observations requiring validation:\n${c.reported.map((item) => `- ${item}`).join("\n")}\n\nDo not overclaim. Evidence gaps before formal ROI/publication:\n${c.gaps.map((item) => `- ${item}`).join("\n")}`;
+    }
+
+    function renderCaseStudy() {
+      const c = state.caseStudy;
+      document.getElementById("caseTitle").textContent = c.title;
+      document.getElementById("caseSubtitle").textContent = c.subtitle;
+      document.getElementById("caseLesson").textContent = c.lesson;
+      document.getElementById("casePills").innerHTML = c.pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("");
+      renderSimpleCards("caseStrategy", c.strategy, "Yellow");
+      renderSimpleCards("caseVerified", c.verified, "Green");
+      renderSimpleCards("caseReported", c.reported, "Pending founder approval");
+      document.getElementById("caseSteps").innerHTML = c.steps.map((step) => `<div class="step">${escapeHtml(step)}</div>`).join("");
+      renderSimpleCards("caseTalkingPoints", c.talkingPoints, "Yellow");
+      renderSimpleCards("caseScorecard", c.scorecard, "Unknown");
+      renderSimpleCards("caseGaps", c.gaps, "Red");
+      document.getElementById("casePrompts").innerHTML = c.prompts.map((prompt, index) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(prompt.title)}</p>
+          <button class="ghost-btn" data-case-prompt="${index}" type="button">Copy</button>
+        </div>
+        <p>${escapeHtml(prompt.body)}</p>
+      </article>`).join("");
+      document.getElementById("caseBriefCopy").textContent = caseStudyBrief();
+      document.querySelectorAll("[data-case-prompt]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const prompt = c.prompts[Number(button.dataset.casePrompt)];
+          copyText(prompt.body, "Prompt copied");
+        });
+      });
+    }
+
     function renderTechnical() {
       state.techAnswers = state.techAnswers || {};
       const total = state.technical.length;
@@ -1338,6 +1628,7 @@
         workstreams: ["Workstreams", "Track owners, statuses, notes, and next actions."],
         approvals: ["Approvals", "Capture founder decisions before anything ships."],
         claims: ["Claims Register", "Filter public-safe, pending, and blocked claims."],
+        "case-study": ["Case Study", "Use the 16th JDC white paper as evidence in action without overclaiming."],
         technical: ["Technical Discovery", "Track source access, deployment, analytics, and rollback facts."],
         copy: ["Copy Center", "Copy founder and technical asks."],
         state: ["State", "Export, import, and preserve local operating state."]
@@ -1361,6 +1652,7 @@
       });
       document.getElementById("copyFounderBtn").addEventListener("click", () => copyText(state.copy.founderAsk, "Founder ask copied"));
       document.getElementById("copyTechBtn").addEventListener("click", () => copyText(state.copy.technicalAsk, "Technical ask copied"));
+      document.getElementById("copyCaseBtn").addEventListener("click", () => copyText(caseStudyBrief(), "Case brief copied"));
       document.querySelectorAll("[data-copy]").forEach((button) => {
         button.addEventListener("click", () => copyText(document.getElementById(button.dataset.copy).textContent));
       });
@@ -1402,6 +1694,7 @@
       renderWorkstreams();
       renderApprovals();
       renderClaims();
+      renderCaseStudy();
       renderTechnical();
       renderCopy();
       renderState();
