@@ -987,6 +987,26 @@
           <div class="pill-list" id="casePills"></div>
         </div>
 
+        <div class="content-grid" style="margin-bottom:14px;">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Evidence Collection CTA</h3>
+                <p class="note">Use this in meetings to turn the story into verified proof over time.</p>
+              </div>
+              <button class="ghost-btn" data-copy="caseEvidenceAskCopy" type="button">Copy ask</button>
+            </div>
+            <p id="caseCta"></p>
+            <div class="quote-panel" id="caseSourceStatus"></div>
+            <textarea id="caseEvidenceAskCopy" class="hidden"></textarea>
+          </div>
+          <div class="panel">
+            <h3>Source Links</h3>
+            <p class="note">Use these for the independently verified context only.</p>
+            <div id="caseSources" class="case-section"></div>
+          </div>
+        </div>
+
         <div class="case-grid">
           <div class="panel">
             <h3>What It Shows</h3>
@@ -1000,6 +1020,16 @@
             <h3>Reported, Needs Validation</h3>
             <div id="caseReported" class="case-section"></div>
           </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h3>Roadmap To Prove Efficacy</h3>
+              <p class="note">Collect evidence gradually, then upgrade claims when proof exists.</p>
+            </div>
+          </div>
+          <div id="caseRoadmap" class="task-list"></div>
         </div>
 
         <div class="content-grid">
@@ -1127,7 +1157,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
 
   <script>
-    const STORAGE_KEY = "bluePartnerCommandCenterState.v1";
+    const STORAGE_KEY = "bluePartnerCommandCenterState.v2";
 
     const defaultData = {
       activated: "2026-07-16",
@@ -1197,19 +1227,31 @@
         title: "16th JDC Digital Court Processing",
         subtitle: "A practical case study in moving a time-sensitive justice workflow from physical transport and paper handoffs to video appearances and digital document exchange.",
         lesson: "Faster court processing requires more than digitizing a form. It requires redesigning the movement of people, documents, decisions, and accountability across the justice system.",
+        cta: "Help Blue Partner turn this from a credible operating story into a verified public case study. Use each meeting to collect one more artifact, source confirmation, or metric that upgrades the story from Ryan-stated internal confidence to public-safe proof.",
+        sourceStatus: "Ryan has represented the implementation story as true. Treat that as internal confidence and strategy evidence. For partner diligence, grant support, public proof, or ROI claims, collect the artifacts and measurements below before upgrading the claim status.",
         pills: ["72-hour appearance workflow", "Video appearance", "Cloud document exchange", "Cross-agency ownership", "Strategy evidence"],
+        sourceLinks: [
+          { label: "16th Judicial District Court jurisdiction", url: "https://www.16jdc.org/" },
+          { label: "Louisiana Code of Criminal Procedure Article 230.1", url: "https://www.legis.la.gov/legis/Law.aspx?d=112388" },
+          { label: "Louisiana Code of Criminal Procedure Article 230.2", url: "https://www.legis.la.gov/legis/Law.aspx?d=112389" }
+        ],
         verified: [
           "The 16th Judicial District Court serves Iberia, St. Martin, and St. Mary Parishes.",
           "The court has original jurisdiction over civil and criminal matters in the district.",
-          "Louisiana Code of Criminal Procedure Article 230.1 establishes the 72-hour appearance requirement.",
-          "Louisiana law permits telephone or audio-video appearances when authorized by local rule."
+          "Louisiana Code of Criminal Procedure Article 230.1 establishes the 72-hour appearance requirement and permits telephone or audio-video appearances when authorized by local rule.",
+          "Louisiana Code of Criminal Procedure Article 230.2 separately provides for probable-cause determination within 48 hours for qualifying warrantless arrests."
         ],
         reported: [
-          "Ryan Bourque served as Director of Information Technology for the 16th Judicial District Court.",
-          "The district used Zoom-enabled iPads for remote judicial appearances.",
-          "Booking and law-enforcement personnel used PDF documents and a cloud folder for document exchange.",
-          "Adoption accelerated after judges made the digital workflow the practical alternative to daily prisoner transport.",
-          "The process reportedly became routine after implementation."
+          "The history and timing of the district's digital implementation.",
+          "The use of Zoom-enabled iPads and cloud folders.",
+          "The extent of agency participation.",
+          "The claim that implementation occurred overnight.",
+          "The claim that adoption generated no complaints.",
+          "The number of transports eliminated.",
+          "Time and financial savings.",
+          "Current progress on digital prosecutorial referrals.",
+          "The status of implementations in St. Martinville and Breaux Bridge.",
+          "The specific role of each participating stakeholder."
         ],
         strategy: [
           "Shows Blue Partner is rooted in real justice-system workflow, not a generic AI pitch.",
@@ -1226,6 +1268,15 @@
           "Assign authority and ownership.",
           "Remove the parallel paper process where appropriate.",
           "Publish the results."
+        ],
+        roadmap: [
+          { stage: "1. Source confirmation", goal: "Confirm the operating story and timeline.", collect: "Ryan interview notes, implementation timeline, local-rule or standing-order references, stakeholder list.", output: "Source-confirmed narrative.", status: "Internal confidence -> verified narrative" },
+          { stage: "2. Workflow artifacts", goal: "Prove how the process works.", collect: "Sample redacted packet, folder structure, submission checklist, role map, process screenshots where safe.", output: "Workflow evidence appendix.", status: "Operational evidence" },
+          { stage: "3. Participation evidence", goal: "Show cross-agency adoption.", collect: "Participating agencies, judges/divisions, clerks/prosecutors involved, training notes.", output: "Adoption map.", status: "Adoption proof" },
+          { stage: "4. Baseline metrics", goal: "Establish the old process.", collect: "Pre-digital transport frequency, staff time, processing time, incomplete paperwork rate.", output: "Baseline scorecard.", status: "Measurement baseline" },
+          { stage: "5. Current-state metrics", goal: "Measure the digital process.", collect: "Digital appearance counts, processing time, transports avoided, exception rate, technical failure rate.", output: "Current-state scorecard.", status: "Measured outcome evidence" },
+          { stage: "6. Comparison", goal: "Prove efficacy.", collect: "Before/after comparison, qualitative stakeholder feedback, cost/time estimates.", output: "Case-study proof table.", status: "Public-safe proof after approval" },
+          { stage: "7. Replication pilot", goal: "Connect to Blue Partner.", collect: "60- to 90-day pilot plan for referral or court-processing workflow.", output: "Blue Partner pilot roadmap.", status: "Future efficacy proof" }
         ],
         scorecard: [
           "Time from arrest to completed judicial appearance.",
@@ -1249,6 +1300,7 @@
           "Stakeholder satisfaction.",
           "Effect on bond-setting time and jail length of stay."
         ],
+        evidenceAsk: `Evidence collection ask\n\nRyan has represented the 16th JDC digital court-processing story as true. We want to turn that internal confidence into public-safe proof over time.\n\nCan you help identify which artifacts, people, and measurements can verify the workflow without exposing confidential records?\n\nPriority evidence to collect:\n- Implementation timeline and who authorized the change.\n- Any local rule, standing order, written procedure, or judicial directive supporting video/remote appearances.\n- A redacted or sample document packet showing how submissions moved digitally.\n- Participating agencies, judges/divisions, clerks, prosecutors, and technical owners.\n- Before/after transport frequency, staff time, processing time, incomplete-document rate, and exceptions.\n- Current status of digital prosecutorial referrals.\n- Status of related implementations in St. Martinville and Breaux Bridge.\n\nGoal: gradually upgrade the case study from Ryan-stated strategy evidence to measured efficacy proof that can support partner diligence, grants, pilots, and public-facing Blue Partner claims.`,
         talkingPoints: [
           "This is what we mean by justice workflow modernization: connecting the person, moving the information, and making the handoff visible.",
           "The lesson is not that courts need a bigger platform first. The lesson is that clearly owned workflows can convert long-standing friction into routine digital practice.",
@@ -1268,6 +1320,10 @@
           {
             title: "Partner Narrative",
             body: "Draft a concise partner-facing narrative that explains how Blue Partner connects officer-level assistance to faster court and prosecutorial processing. Use the 16th JDC case as evidence in action, but label reported observations and missing measurements clearly."
+          },
+          {
+            title: "Evidence Collection Sprint",
+            body: "Create a two-week evidence collection sprint for the 16th JDC case study. Include who to ask, what artifact or metric to request, evidence status, public-use risk, and how each collected item would upgrade Blue Partner's proof claims."
           }
         ]
       },
@@ -1324,7 +1380,7 @@
       result.blockers = mergeById(base.blockers, saved.blockers);
       result.approvals = mergeById(base.approvals, saved.approvals);
       result.claims = mergeById(base.claims, saved.claims);
-      result.caseStudy = { ...base.caseStudy, ...(saved.caseStudy || {}) };
+      result.caseStudy = base.caseStudy;
       result.techAnswers = saved.techAnswers || {};
       result.taskDone = saved.taskDone || {};
       result.copy = { ...base.copy, ...(saved.copy || {}) };
@@ -1533,7 +1589,7 @@
 
     function caseStudyBrief() {
       const c = state.caseStudy;
-      return `${c.title}\n\n${c.subtitle}\n\nStrategic lesson:\n${c.lesson}\n\nWhat this shows:\n${c.strategy.map((item) => `- ${item}`).join("\n")}\n\nVerified context:\n${c.verified.map((item) => `- ${item}`).join("\n")}\n\nReported observations requiring validation:\n${c.reported.map((item) => `- ${item}`).join("\n")}\n\nDo not overclaim. Evidence gaps before formal ROI/publication:\n${c.gaps.map((item) => `- ${item}`).join("\n")}`;
+      return `${c.title}\n\n${c.subtitle}\n\nStrategic lesson:\n${c.lesson}\n\nCTA:\n${c.cta}\n\nEvidence status:\n${c.sourceStatus}\n\nWhat this shows:\n${c.strategy.map((item) => `- ${item}`).join("\n")}\n\nVerified context:\n${c.verified.map((item) => `- ${item}`).join("\n")}\n\nReported observations requiring validation:\n${c.reported.map((item) => `- ${item}`).join("\n")}\n\nRoadmap to prove efficacy:\n${c.roadmap.map((item) => `- ${item.stage}: ${item.goal} Collect: ${item.collect}`).join("\n")}\n\nDo not overclaim. Evidence gaps before formal ROI/publication:\n${c.gaps.map((item) => `- ${item}`).join("\n")}`;
     }
 
     function renderCaseStudy() {
@@ -1541,11 +1597,29 @@
       document.getElementById("caseTitle").textContent = c.title;
       document.getElementById("caseSubtitle").textContent = c.subtitle;
       document.getElementById("caseLesson").textContent = c.lesson;
+      document.getElementById("caseCta").textContent = c.cta;
+      document.getElementById("caseSourceStatus").textContent = c.sourceStatus;
       document.getElementById("casePills").innerHTML = c.pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("");
+      document.getElementById("caseSources").innerHTML = c.sourceLinks.map((source) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(source.label)}</p>
+          ${badge("Green")}
+        </div>
+        <p><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.url)}</a></p>
+      </article>`).join("");
       renderSimpleCards("caseStrategy", c.strategy, "Yellow");
       renderSimpleCards("caseVerified", c.verified, "Green");
       renderSimpleCards("caseReported", c.reported, "Pending founder approval");
       document.getElementById("caseSteps").innerHTML = c.steps.map((step) => `<div class="step">${escapeHtml(step)}</div>`).join("");
+      document.getElementById("caseRoadmap").innerHTML = c.roadmap.map((item) => `<article class="card">
+        <div class="card-head">
+          <p class="card-title">${escapeHtml(item.stage)}</p>
+          ${badge(item.status)}
+        </div>
+        <p><strong>Goal:</strong> ${escapeHtml(item.goal)}</p>
+        <p><strong>Collect:</strong> ${escapeHtml(item.collect)}</p>
+        <p><strong>Output:</strong> ${escapeHtml(item.output)}</p>
+      </article>`).join("");
       renderSimpleCards("caseTalkingPoints", c.talkingPoints, "Yellow");
       renderSimpleCards("caseScorecard", c.scorecard, "Unknown");
       renderSimpleCards("caseGaps", c.gaps, "Red");
@@ -1557,6 +1631,7 @@
         <p>${escapeHtml(prompt.body)}</p>
       </article>`).join("");
       document.getElementById("caseBriefCopy").textContent = caseStudyBrief();
+      document.getElementById("caseEvidenceAskCopy").textContent = c.evidenceAsk;
       document.querySelectorAll("[data-case-prompt]").forEach((button) => {
         button.addEventListener("click", () => {
           const prompt = c.prompts[Number(button.dataset.casePrompt)];
